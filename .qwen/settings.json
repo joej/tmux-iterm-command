@@ -1,0 +1,37 @@
+{
+  "mcpServers": {
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-knowledge-graph",
+        "--memory-path",
+        "/Users/judge/src/claude-iterm-tmux/.aim"
+      ]
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--project",
+        "/Users/judge/src/claude-iterm-tmux"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/arben-adm/mcp-sequential-thinking",
+        "--with",
+        "portalocker",
+        "mcp-sequential-thinking"
+      ]
+    }
+  },
+  "$version": 2
+}

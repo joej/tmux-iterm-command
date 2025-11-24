@@ -1,0 +1,1 @@
+"""ticmd - Tmux and iTerm2 command tool for coding agents"""
