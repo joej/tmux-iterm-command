@@ -1,8 +1,8 @@
-# ticmd: Implementation Plan
+# tmux-iterm-command: Implementation Plan
 
 ## Project Purpose
 
-ticmd (tmux iterm command) is a command-line tool for coding agents (Claude, Qwen, Gemini, Codex) to create and manage tmux windows/panes. The tool operates within existing tmux sessions and focuses on window/pane management rather than session lifecycle management.
+tmux-iterm-command is a command-line tool for coding agents (Claude, Qwen, Gemini, Codex) to create and manage tmux windows/panes. The tool operates within existing tmux sessions and focuses on window/pane management rather than session lifecycle management.
 
 ---
 
@@ -75,32 +75,32 @@ close/destroy/terminate the window or pane
 
 **1. create-window** - Create window with command
 ```bash
-ticmd create-window --name "check" [--command "python manage.py check"] [--shell bash]
+tmux-iterm-command create-window --name "check" [--command "python manage.py check"] [--shell bash]
 # Output: {status: success, window_id: "1", name: "check", pane_id: "%0"}
 # Pattern: Creates shell first, then sends command if provided
 ```
 
 **2. create-pane** - Split window into pane
 ```bash
-ticmd create-pane --window 1 [--vertical] [--command "tail -f logs/app.log"]
+tmux-iterm-command create-pane --window 1 [--vertical] [--command "tail -f logs/app.log"]
 # Output: {status: success, pane_id: "1", orientation: "vertical"}
 ```
 
 **3. list-sessions** - Show all sessions
 ```bash
-ticmd list-sessions
+tmux-iterm-command list-sessions
 # Output: {status: success, sessions: [{id: "@1", name: "claude-dev", attached: true, windows: 2}]}
 ```
 
 **4. list-windows** - Show all windows in current session
 ```bash
-ticmd list-windows
+tmux-iterm-command list-windows
 # Output: {status: success, windows: [{index: 0, name: "check", active: true, panes: 1}]}
 ```
 
 **5. list-panes** - Show panes in window
 ```bash
-ticmd list-panes --window 1
+tmux-iterm-command list-panes --window 1
 # Output: {status: success, panes: [{id: "%0", index: 0, active: true, height: 24, width: 80}]}
 ```
 
@@ -108,19 +108,19 @@ ticmd list-panes --window 1
 
 **6. send-command** - Send command to pane
 ```bash
-ticmd send-command --window 1 --pane 0 --text "ls -la" [--no-enter]
+tmux-iterm-command send-command --window 1 --pane 0 --text "ls -la" [--no-enter]
 # Output: {status: success, command: "ls -la", window_index: 1, pane_index: 0}
 ```
 
 **7. capture** - Read pane output
 ```bash
-ticmd capture --window 1 --pane 0 [--lines 100]
+tmux-iterm-command capture --window 1 --pane 0 [--lines 100]
 # Output: {status: success, content: "...", lines: 100, window_index: 1, pane_index: 0}
 ```
 
 **8. wait-idle** - Wait for pane to be idle
 ```bash
-ticmd wait-idle --window 1 --pane 0 [--timeout 30] [--quiet-for 2]
+tmux-iterm-command wait-idle --window 1 --pane 0 [--timeout 30] [--quiet-for 2]
 # Output: {status: success, elapsed: 3.2, window_index: 1, pane_index: 0}
 # Blocks until no output for N seconds
 ```
@@ -129,13 +129,13 @@ ticmd wait-idle --window 1 --pane 0 [--timeout 30] [--quiet-for 2]
 
 **9. kill-window** - Close window
 ```bash
-ticmd kill-window --window 1
+tmux-iterm-command kill-window --window 1
 # Output: {status: success, window_index: 1}
 ```
 
 **10. kill-pane** - Close pane
 ```bash
-ticmd kill-pane --window 1 --pane 1
+tmux-iterm-command kill-pane --window 1 --pane 1
 # Output: {status: success, window_index: 1, pane_index: 1}
 ```
 
@@ -146,7 +146,7 @@ The tool operates within existing tmux sessions and only manages windows/panes.
 
 **11. detect** - Show environment capabilities
 ```bash
-ticmd detect
+tmux-iterm-command detect
 # Output: {
 #   status: "success",
 #   iterm2: false,
@@ -159,7 +159,7 @@ ticmd detect
 
 **12. status** - Show current session state
 ```bash
-ticmd status
+tmux-iterm-command status
 # Output: {
 #   status: "success",
 #   windows: [...],
@@ -353,7 +353,7 @@ claude-iterm-tmux/
 ├── .gitignore
 │
 ├── src/
-│   └── claude_tmux/
+│   └── tmux_iterm_command/
 │       ├── __init__.py
 │       ├── cli.py            # Click commands (entry point)
 │       ├── manager.py        # TmuxManager class
@@ -371,74 +371,64 @@ claude-iterm-tmux/
 
 ---
 
-## Usage Examples (Claude Code Workflow)
+## Usage Examples (Coding Agent Workflow)
 
 ### Example 1: Validate Django Fix
 ```bash
 # Create window with shell, run check
-result=$(claude-tmux create-window --name check --command "python manage.py check" --shell zsh)
-window=$(echo $result | jq -r '.window_id')
-
-# Set badge
-claude-tmux set-badge --window $window --text "Checking..."
+result=$(tmux-iterm-command create-window --name check --command "python manage.py check" --shell bash)
+window=$(echo $result | jq -r '.window_index')
 
 # Wait for completion
-claude-tmux wait-idle --window $window --timeout 10
+tmux-iterm-command wait-idle --window $window --pane 0 --timeout 10
 
 # Read output
-output=$(claude-tmux capture --window $window --lines 50)
+output=$(tmux-iterm-command capture --window $window --pane 0 --lines 50)
 
 # Parse result
 if echo "$output" | grep -q "System check identified no issues"; then
-    claude-tmux set-tab-color --window $window --red 0 --green 255 --blue 0
-    claude-tmux notify --message "✓ Check passed!"
+    echo "✓ Check passed!"
 else
-    claude-tmux set-tab-color --window $window --red 255 --green 0 --blue 0
-    claude-tmux notify --message "✗ Check failed" --bounce
+    echo "✗ Check failed"
 fi
 
 # Close window
-claude-tmux kill-window --window $window
+tmux-iterm-command kill-window --window $window
 ```
 
 ### Example 2: Interactive Shell Query
 ```bash
 # Create shell window
-result=$(claude-tmux create-window --name shell --command "python manage.py shell_plus")
-window=$(echo $result | jq -r '.window_id')
+result=$(tmux-iterm-command create-window --name shell --command "python manage.py shell")
+window=$(echo $result | jq -r '.window_index')
 
 # Wait for shell to start
-claude-tmux wait-idle --window $window --timeout 5
+tmux-iterm-command wait-idle --window $window --pane 0 --timeout 5
 
 # Send query
-claude-tmux send --window $window --pane 0 --text "User.objects.count()"
+tmux-iterm-command send-command --window $window --pane 0 --text "User.objects.count()"
 
 # Wait for result
-claude-tmux wait-idle --window $window --quiet-for 1
+tmux-iterm-command wait-idle --window $window --pane 0 --quiet-for 1
 
 # Read result
-output=$(claude-tmux capture --window $window --lines 20)
+output=$(tmux-iterm-command capture --window $window --pane 0 --lines 20)
 echo "Result: $output"
 
 # Close
-claude-tmux kill-window --window $window
+tmux-iterm-command kill-window --window $window
 ```
 
 ### Example 3: Long-Running Server
 ```bash
 # Start server
-result=$(claude-tmux create-window --name runserver --command "python manage.py runserver")
-window=$(echo $result | jq -r '.window_id')
-
-# Set badge and color
-claude-tmux set-badge --window $window --text "Dev Server 🚀"
-claude-tmux set-tab-color --window $window --red 0 --green 150 --blue 255
+result=$(tmux-iterm-command create-window --name runserver --command "python manage.py runserver")
+window=$(echo $result | jq -r '.window_index')
 
 # Later: check for errors
-output=$(claude-tmux capture --window $window --lines 100)
+output=$(tmux-iterm-command capture --window $window --pane 0 --lines 100)
 if echo "$output" | grep -qE "ERROR|Exception"; then
-    claude-tmux annotate --window $window --pane 0 --text "⚠️ Server errors detected"
-    claude-tmux notify --message "Server has errors!" --bounce
+    echo "Server has errors!"
 fi
 
 # Keep window alive - don't kill

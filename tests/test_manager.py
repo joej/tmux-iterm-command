@@ -1,4 +1,4 @@
-"""Comprehensive tests for ticmd functionality."""
+"""Comprehensive tests for tmux-iterm-command functionality."""
 import json
 import sys
 import os

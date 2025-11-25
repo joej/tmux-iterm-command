@@ -1,6 +1,6 @@
-# ticmd - Tmux and iTerm2 Command Tool
+# tmux-iterm-command - Tmux Command Tool
 
-`ticmd` (tmux iterm command) is a command-line tool designed for coding agents (Claude, Qwen, Gemini, Codex) to manage tmux windows and panes within existing sessions. It provides a structured interface for coding agents to create terminal environments, run commands, capture output, and manage terminal windows/panes programmatically.
+`tmux-iterm-command` is a command-line tool designed for coding agents (Claude, Qwen, Gemini, Codex) to manage tmux windows and panes within existing sessions. It provides a structured interface for coding agents to create terminal environments, run commands, capture output, and manage terminal windows/panes programmatically.
 
 ## Features
 
@@ -22,45 +22,45 @@ pip install -e .
 
 ```bash
 # Create a new window and run a command
-ticmd create-window --name check --command "python manage.py check"
+tmux-iterm-command create-window --name check --command "python manage.py check"
 
 # List all windows in the current session
-ticmd list-windows
+tmux-iterm-command list-windows
 
 # Send a command to a specific pane
-ticmd send-command --window 0 --pane 0 "ls -la"
+tmux-iterm-command send-command --window 0 --pane 0 "ls -la"
 
 # Capture output from a pane
-ticmd capture-pane --window 0 --pane 0 --lines 50
+tmux-iterm-command capture-pane --window 0 --pane 0 --lines 50
 
 # Wait for a pane to be idle (no output for 2 seconds, timeout after 30s)
-ticmd wait-idle --window 0 --pane 0 --quiet-for 2 --timeout 30
+tmux-iterm-command wait-idle --window 0 --pane 0 --quiet-for 2 --timeout 30
 
 # Kill a window
-ticmd kill-window --window 0
+tmux-iterm-command kill-window --window 0
 ```
 
 ### Session and Environment Commands
 
 ```bash
 # List all tmux sessions (to see what sessions are available)
-ticmd list-sessions
+tmux-iterm-command list-sessions
 
 # Create a new pane by splitting a window
-ticmd create-pane --window 0 --vertical --command "tail -f logs/app.log"
+tmux-iterm-command create-pane --window 0 --vertical --command "tail -f logs/app.log"
 
 # Kill a pane
-ticmd kill-pane --window 0 --pane 1
+tmux-iterm-command kill-pane --window 0 --pane 1
 ```
 
 ### Environment Detection
 
 ```bash
 # Detect current environment capabilities
-ticmd detect
+tmux-iterm-command detect
 
 # Check current status
-ticmd status
+tmux-iterm-command status
 ```
 
 ## Command Reference

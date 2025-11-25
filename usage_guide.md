@@ -1,6 +1,6 @@
-# Comprehensive ticmd Usage Guide
+# Comprehensive tmux-iterm-command Usage Guide
 
-ticmd (tmux iterm command) is a powerful tool that enables coding agents and developers to manage tmux windows and panes programmatically. Here's a comprehensive guide with practical command examples:
+tmux-iterm-command is a powerful tool that enables coding agents and developers to manage tmux windows and panes programmatically. Here's a comprehensive guide with practical command examples:
 
 ## Basic Usage Patterns
 
@@ -8,36 +8,36 @@ ticmd (tmux iterm command) is a powerful tool that enables coding agents and dev
 
 ```bash
 # Run a simple command in a new window
-ticmd create-window --name search --command "find src -name '*.py'"
+tmux-iterm-command create-window --name search --command "find src -name '*.py'"
 
 # Create a window with a specific shell and command
-ticmd create-window --name grep --command "grep -r 'function_name' src/" --shell "/bin/bash"
+tmux-iterm-command create-window --name grep --command "grep -r 'function_name' src/" --shell "/bin/bash"
 ```
 
 ### Capturing Output
 
 ```bash
 # Run a command and capture its output
-ticmd create-window --name "file-search" --command "find . -name '*.py' -type f"
-ticmd wait-idle --window 0 --pane 0 --timeout 10
-ticmd capture --window 0 --pane 0 --lines 20
+tmux-iterm-command create-window --name "file-search" --command "find . -name '*.py' -type f"
+tmux-iterm-command wait-idle --window 0 --pane 0 --timeout 10
+tmux-iterm-command capture --window 0 --pane 0 --lines 20
 
 # Search for Python files specifically
-ticmd create-window --name "py-search" --command "find . -name '*.py' | head -20"
-ticmd wait-idle --window 0 --pane 0 --timeout 5 --quiet-for 1
-ticmd capture --window 0 --pane 0
+tmux-iterm-command create-window --name "py-search" --command "find . -name '*.py' | head -20"
+tmux-iterm-command wait-idle --window 0 --pane 0 --timeout 5 --quiet-for 1
+tmux-iterm-command capture --window 0 --pane 0
 ```
 
 ### Managing Multiple Tasks
 
 ```bash
 # Run multiple commands in parallel
-ticmd create-window --name "backend" --command "python manage.py runserver 8000"
-ticmd create-window --name "frontend" --command "npm run dev"
-ticmd create-window --name "tests" --command "python -m pytest --watch"
+tmux-iterm-command create-window --name "backend" --command "python manage.py runserver 8000"
+tmux-iterm-command create-window --name "frontend" --command "npm run dev"
+tmux-iterm-command create-window --name "tests" --command "python -m pytest --watch"
 
 # List all windows to see current tasks
-ticmd list-windows
+tmux-iterm-command list-windows
 ```
 
 ## Development Workflows
@@ -46,16 +46,16 @@ ticmd list-windows
 
 ```bash
 # Run Django management commands
-ticmd create-window --name "migrations" --command "python manage.py makemigrations"
-ticmd wait-idle --window 0 --pane 0 --timeout 10
-ticmd capture --window 0 --pane 0
+tmux-iterm-command create-window --name "migrations" --command "python manage.py makemigrations"
+tmux-iterm-command wait-idle --window 0 --pane 0 --timeout 10
+tmux-iterm-command capture --window 0 --pane 0
 
 # Run tests in a separate window
-ticmd create-window --name "tests" --command "python -m pytest tests/test_models.py -v"
-ticmd create-window --name "shell" --command "python manage.py shell"
-ticmd send-command --window 1 --pane 0 --text "User.objects.count()"
-ticmd wait-idle --window 1 --pane 0 --quiet-for 1
-ticmd capture --window 1 --pane 0 --lines 10
+tmux-iterm-command create-window --name "tests" --command "python -m pytest tests/test_models.py -v"
+tmux-iterm-command create-window --name "shell" --command "python manage.py shell"
+tmux-iterm-command send-command --window 1 --pane 0 --text "User.objects.count()"
+tmux-iterm-command wait-idle --window 1 --pane 0 --quiet-for 1
+tmux-iterm-command capture --window 1 --pane 0 --lines 10
 ```
 
 ### Node.js Development
@@ -286,4 +286,4 @@ if [ -n "$lint_result" ] && ! echo "$lint_result" | grep -q "0"; then
 fi
 ```
 
-These examples demonstrate how ticmd enables coding agents and developers to orchestrate complex workflows with multiple concurrent processes, monitor outputs, and manage tmux windows/panes programmatically. The tool works within existing tmux sessions and focuses on window and pane operations. The JSON-based output format makes it easy for agents to parse results and make decisions based on command outcomes.
+These examples demonstrate how tmux-iterm-command enables coding agents and developers to orchestrate complex workflows with multiple concurrent processes, monitor outputs, and manage tmux windows/panes programmatically. The tool works within existing tmux sessions and focuses on window and pane operations. The JSON-based output format makes it easy for agents to parse results and make decisions based on command outcomes.

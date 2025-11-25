@@ -1,7 +1,7 @@
 [project]
-name = "ticmd"
+name = "tmux-iterm-command"
 version = "0.1.0"
-description = "Tmux and iTerm2 command tool for coding agents"
+description = "Tmux command tool for coding agents to manage tmux windows and panes"
 readme = "README.md"
 requires-python = ">=3.8"
 authors = [{name = "Developer", email = "developer@example.com"}]
@@ -21,8 +21,14 @@ dev = [
 ]
 
 [project.scripts]
-ticmd = "ticmd.cli:main"
+tmux-iterm-command = "claude_tmux.cli:run"
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

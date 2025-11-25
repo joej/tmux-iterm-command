@@ -1,6 +1,6 @@
-# ticmd - Tmux Command Tool for Coding Agents
+# tmux-iterm-command - Tmux Command Tool for Coding Agents
 
-**Project Name**: `ticmd` (tmux iterm command)
+**Project Name**: `tmux-iterm-command`
 **Purpose**: Enable coding agents (Claude, Qwen, Gemini, Codex) to manage tmux windows for interactive command execution, background processes, and terminal workflows
 **Target User**: tmux users running coding agents (Claude, Qwen, Gemini, Codex)
 **Primary Use Case**: Development workflows with runserver, shell, and interactive commands
@@ -142,7 +142,7 @@ claude-tmux/
 ├── .gitignore
 │
 ├── src/
-│   └── claude_tmux/
+│   └── tmux_iterm_command/
 │       ├── __init__.py          # Package exports
 │       ├── cli.py               # Click CLI interface
 │       ├── manager.py           # WindowManager class (core)
@@ -184,54 +184,54 @@ claude-tmux/
 
 ```bash
 # Create window and run command
-ticmd create-window [OPTIONS]
+tmux-iterm-command create-window [OPTIONS]
   --name TEXT              Named window (default: auto-generated)
   --command TEXT           Command to run in the window
   --shell TEXT             Shell to use (default: /bin/bash)
 
 # Send command to pane
-ticmd send-command [OPTIONS]
+tmux-iterm-command send-command [OPTIONS]
   --window INTEGER         Window index
   --pane INTEGER           Pane index
   --no-enter              Don't press Enter after command (default: press Enter)
 
 # Capture output from pane
-ticmd capture [OPTIONS]
+tmux-iterm-command capture [OPTIONS]
   --window INTEGER         Window index
   --pane INTEGER           Pane index
   --lines INTEGER          Number of lines to capture (default: 100)
 
 # List sessions
-ticmd list-sessions
+tmux-iterm-command list-sessions
 
 # List windows in current session
-ticmd list-windows
+tmux-iterm-command list-windows
 
 # List panes in window
-ticmd list-panes [OPTIONS]
+tmux-iterm-command list-panes [OPTIONS]
   --window INTEGER         Window index
 
 # Terminate window
-ticmd kill-window [OPTIONS]
+tmux-iterm-command kill-window [OPTIONS]
   --window INTEGER         Window index to kill
 
 # Terminate pane
-ticmd kill-pane [OPTIONS]
+tmux-iterm-command kill-pane [OPTIONS]
   --window INTEGER         Window index containing the pane
   --pane INTEGER           Pane index to kill
 
 # Wait for pane to be idle
-ticmd wait-idle [OPTIONS]
+tmux-iterm-command wait-idle [OPTIONS]
   --window INTEGER         Window index
   --pane INTEGER           Pane index
   --timeout INTEGER        Max time to wait (default: 30)
   --quiet-for INTEGER      Seconds with no output to consider idle (default: 2)
 
 # Detect environment
-ticmd detect
+tmux-iterm-command detect
 
 # Show current status
-ticmd status
+tmux-iterm-command status
 ```
 
 #### 2. Window/Pane Management Concepts
@@ -240,7 +240,7 @@ ticmd status
 - Windows/panes start with a shell (bash by default)
 - Commands are sent to the existing shell environment
 - This prevents output loss and maintains environment state
-- Example: `ticmd create-window --name check --command "python manage.py check"`
+- Example: `tmux-iterm-command create-window --name check --command "python manage.py check"`
 
 **Working Within Sessions**
 - The tool operates within existing tmux sessions
@@ -256,36 +256,36 @@ ticmd status
 
 ```bash
 # Create window to run Django checks
-$ ticmd create-window --name check --command "python manage.py check"
+$ tmux-iterm-command create-window --name check --command "python manage.py check"
 {"status": "success", "window_id": "@1:1.0", "window_index": 1, "pane_id": "%0", ...}
 
 # Wait for command to complete
-$ ticmd wait-idle --window 1 --pane 0 --timeout 10
+$ tmux-iterm-command wait-idle --window 1 --pane 0 --timeout 10
 {"status": "success", "elapsed": 2.5, ...}
 
 # Capture output to see results
-$ ticmd capture --window 1 --pane 0 --lines 50
+$ tmux-iterm-command capture --window 1 --pane 0 --lines 50
 {"status": "success", "content": "System check identified no issues...\\n", ...}
 
 # Create window for Django shell
-$ ticmd create-window --name shell --command "python manage.py shell"
+$ tmux-iterm-command create-window --name shell --command "python manage.py shell"
 {"status": "success", ...}
 
 # Later, send a command to the shell
-$ ticmd send-command --window 1 --pane 0 --text "User.objects.count()"
+$ tmux-iterm-command send-command --window 1 --pane 0 --text "User.objects.count()"
 {"status": "success", ...}
 
 # Wait for response and capture output
-$ ticmd wait-idle --window 1 --pane 0 --quiet-for 1
-$ ticmd capture --window 1 --pane 0 --lines 10
+$ tmux-iterm-command wait-idle --window 1 --pane 0 --quiet-for 1
+$ tmux-iterm-command capture --window 1 --pane 0 --lines 10
 {"status": "success", "content": ">>> User.objects.count()\\n42\\n>>>\\n"}
 
 # List current windows
-$ ticmd list-windows
+$ tmux-iterm-command list-windows
 {"status": "success", "session": "claude-dev", "windows": [{"index": 0, "name": "check", ...}, {"index": 1, "name": "shell", ...}]}
 
 # Kill window when done
-$ ticmd kill-window --window 1
+$ tmux-iterm-command kill-window --window 1
 {"status": "success", ...}
 ```
 
@@ -293,15 +293,15 @@ $ ticmd kill-window --window 1
 
 ```bash
 # Start Django dev server in a window
-$ ticmd create-window --name runserver --command "python manage.py runserver 8000"
+$ tmux-iterm-command create-window --name runserver --command "python manage.py runserver 8000"
 {"status": "success", ...}
 
 # Check for errors periodically
-$ ticmd capture --window 0 --pane 0 --lines 20
+$ tmux-iterm-command capture --window 0 --pane 0 --lines 20
 {"status": "success", "content": "...\\nDjango version 4.2, using settings 'myproject.settings'\\nStarting development server at http://127.0.0.1:8000/\\n...", ...}
 
 # List sessions to see all available sessions
-$ ticmd list-sessions
+$ tmux-iterm-command list-sessions
 {"status": "success", "sessions": [{"id": "@1", "name": "claude-dev", "attached": 1, "windows": 2}]}
 ```
 
@@ -309,16 +309,16 @@ $ ticmd list-sessions
 
 ```bash
 # Run tests in one window
-$ ticmd create-window --name tests --command "python -m pytest tests/test_models.py"
+$ tmux-iterm-command create-window --name tests --command "python -m pytest tests/test_models.py"
 {"status": "success", ...}
 
 # Run linter in a split pane of the same window
-$ ticmd create-pane --window 0 --vertical --command "flake8 myapp/models.py"
+$ tmux-iterm-command create-pane --window 0 --vertical --command "flake8 myapp/models.py"
 {"status": "success", ...}
 
 # Monitor both outputs separately
-$ ticmd capture --window 0 --pane 0 --lines 10  # Tests output
-$ ticmd capture --window 0 --pane 1 --lines 10  # Linter output
+$ tmux-iterm-command capture --window 0 --pane 0 --lines 10  # Tests output
+$ tmux-iterm-command capture --window 0 --pane 1 --lines 10  # Linter output
 ```
 
 ---
@@ -493,24 +493,18 @@ No special iTerm2 setup is needed for basic functionality.
 # Install
 pip install -e .
 
-# Initialize
-claude-tmux init
-
-# Start Django dev server
+# Start Django dev server in a new window
 cd /path/to/django/project
-claude-tmux django runserver
-
-# Open shell_plus
-claude-tmux django shell --plus
+tmux-iterm-command create-window --name runserver --command "python manage.py runserver"
 
 # List windows
-claude-tmux list
+tmux-iterm-command list-windows
 
-# Read output
-claude-tmux read runserver_8000
+# Check output of the runserver window (e.g., window 0, pane 0)
+tmux-iterm-command capture --window 0 --pane 0 --lines 20
 
-# Kill window
-claude-tmux kill shell_plus
+# Kill window when done
+tmux-iterm-command kill-window --window 0
 ```
 
 ---

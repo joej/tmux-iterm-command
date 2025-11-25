@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-ticmd (tmux iterm command) is a command-line tool that bridges coding agents (Claude, Qwen, Gemini, Codex) with tmux. It enables coding agents to programmatically:
+tmux-iterm-command is a command-line tool that bridges coding agents (Claude, Qwen, Gemini, Codex) with tmux. It enables coding agents to programmatically:
 - Create and manage tmux windows and panes within existing sessions
 - Execute commands and capture output
 - Interact with terminal sessions in a structured way
@@ -52,13 +52,13 @@ pip install -e .
 
 ```bash
 # Show available commands
-ticmd --help
+tmux-iterm-command --help
 
 # Run a specific command with options
-ticmd create-window --name editor
+tmux-iterm-command create-window --name editor
 
 # For development: run directly with Python
-python -m src.claude_tmux.cli <command> <args>
+python -m src.tmux_iterm_command.cli <command> <args>
 ```
 
 ### Running Tests
@@ -83,51 +83,51 @@ pytest tests/test_tmux_manager.py::test_create_window
 
 ```bash
 # Create a window in the current/default session
-ticmd create-window --name editor --command "vim myfile.txt"
+tmux-iterm-command create-window --name editor --command "vim myfile.txt"
 
 # Create a pane by splitting a window
-ticmd create-pane --window 0 --vertical --command "tail -f logs/app.log"
+tmux-iterm-command create-pane --window 0 --vertical --command "tail -f logs/app.log"
 
 # List active sessions
-ticmd list-sessions
+tmux-iterm-command list-sessions
 
 # List windows in current session
-ticmd list-windows
+tmux-iterm-command list-windows
 
 # List panes in a window
-ticmd list-panes --window 0
+tmux-iterm-command list-panes --window 0
 ```
 
 ### Command Execution
 
 ```bash
 # Send a command to a specific pane
-ticmd send-command --window 0 --pane 0 "npm install"
+tmux-iterm-command send-command --window 0 --pane 0 "npm install"
 
 # Send command without pressing Enter
-ticmd send-command --window 0 --pane 0 --no-enter "echo hello"
+tmux-iterm-command send-command --window 0 --pane 0 --no-enter "echo hello"
 
 # Capture pane output
-ticmd capture-pane --window 0 --pane 0 --lines 100
+tmux-iterm-command capture-pane --window 0 --pane 0 --lines 100
 
 # Wait for pane to be idle (no output for 2 seconds, timeout after 30s)
-ticmd wait-idle --window 0 --pane 0 --quiet-for 2 --timeout 30
+tmux-iterm-command wait-idle --window 0 --pane 0 --quiet-for 2 --timeout 30
 ```
 
 ### Window/Pane Management
 
 ```bash
 # Kill a window
-ticmd kill-window --window 1
+tmux-iterm-command kill-window --window 1
 
 # Kill a pane
-ticmd kill-pane --window 0 --pane 1
+tmux-iterm-command kill-pane --window 0 --pane 1
 
 # Detect environment capabilities
-ticmd detect
+tmux-iterm-command detect
 
 # Show current status
-ticmd status
+tmux-iterm-command status
 ```
 
 ## Key Architecture Patterns
@@ -180,11 +180,11 @@ The tool works within existing tmux sessions:
 
 ## Adding New Commands
 
-1. Add function to `src/claude_tmux/commands.py` (all commands are in one file currently)
+1. Add function to `src/tmux_iterm_command/commands.py` (all commands are in one file currently)
 2. Implement Click command with proper options
-3. Add to command registration in `src/claude_tmux/cli.py`
+3. Add to command registration in `src/tmux_iterm_command/cli.py`
 4. Write tests in `tests/test_commands.py`
-5. Test manually: `ticmd your-command --help`
+5. Test manually: `tmux-iterm-command your-command --help`
 
 ## Testing Strategy
 
@@ -199,10 +199,10 @@ The tool works within existing tmux sessions:
 
 ```bash
 # All commands support --verbose flag
-ticmd create-window --name editor --verbose
+tmux-iterm-command create-window --name editor --verbose
 
 # Or set environment variable
-TICMD_DEBUG=1 ticmd create-window --name editor
+TMUX_ITERM_COMMAND_DEBUG=1 tmux-iterm-command create-window --name editor
 ```
 
 ### Check tmux status

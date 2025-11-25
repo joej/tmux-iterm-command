@@ -1,4 +1,4 @@
-"""Pytest configuration for ticmd tests."""
+"""Pytest configuration for tmux-iterm-command tests."""
 import sys
 import os
 import pytest

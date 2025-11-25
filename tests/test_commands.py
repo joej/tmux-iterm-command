@@ -9,7 +9,7 @@ import pytest
 # Add src to path so we can import the module
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from claude_tmux.commands import output_result
+from tmux_iterm_command.commands import output_result
 
 
 def test_output_result_function():
@@ -41,7 +41,7 @@ def test_output_result_function():
 
 def test_command_functions_exist():
     """Test that CLI command functions exist and have expected structure."""
-    import claude_tmux.commands as cmd_module
+    import tmux_iterm_command.commands as cmd_module
     
     # Check that command functions exist
     assert hasattr(cmd_module, 'create_window')

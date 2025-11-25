@@ -1,4 +1,4 @@
-"""Basic tests for ticmd functionality."""
+"""Basic tests for tmux-iterm-command functionality."""
 import pytest
 import json
 from unittest.mock import Mock, patch

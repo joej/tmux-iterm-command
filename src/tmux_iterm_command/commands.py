@@ -1,4 +1,4 @@
-"""Command handlers for ticmd CLI."""
+"""Command handlers for tmux-iterm-command CLI."""
 import click
 import json
 from typing import Dict, Any, Optional
@@ -155,7 +155,7 @@ def set_mark(ctx: click.Context, window_index: int, pane_index: int) -> None:
 
 @click.command()
 @click.option('--message', required=True, help='Notification message')
-@click.option('--title', default='ticmd', help='Notification title')
+@click.option('--title', default='tmux-iterm-command', help='Notification title')
 @click.pass_context
 def notify(ctx: click.Context, message: str, title: str) -> None:
     """Send notification (placeholder - requires iTerm2 integration)."""

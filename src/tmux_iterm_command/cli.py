@@ -1,11 +1,10 @@
-"""Main CLI entry point for ticmd."""
+"""Main CLI entry point for tmux-iterm-command."""
 import click
 import sys
 from typing import Optional
 
 from .manager import TmuxManager
 from .commands import (
-    create_session,
     create_window,
     create_pane,
     list_sessions,
@@ -14,7 +13,6 @@ from .commands import (
     send_command,
     capture_pane,
     wait_idle,
-    kill_session,
     kill_window,
     kill_pane,
     set_badge,
@@ -40,7 +38,6 @@ def main(ctx: click.Context, session: str, verbose: bool):
 
 
 # Add all commands to the CLI
-main.add_command(create_session)
 main.add_command(create_window)
 main.add_command(create_pane)
 main.add_command(list_sessions)
@@ -49,7 +46,6 @@ main.add_command(list_panes)
 main.add_command(send_command)
 main.add_command(capture_pane)
 main.add_command(wait_idle)
-main.add_command(kill_session)
 main.add_command(kill_window)
 main.add_command(kill_pane)
 main.add_command(set_badge)
