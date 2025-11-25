@@ -21,7 +21,7 @@ dev = [
 ]
 
 [project.scripts]
-tmux-iterm-command = "claude_tmux.cli:run"
+tmux-iterm-command = "tmux_iterm_command.cli:run"
 
 [build-system]
 requires = ["setuptools>=61.0", "wheel"]
