@@ -20,6 +20,7 @@ class TmuxManager:
         self.session_name = session_name
         self.verbose = verbose
         self._session: Optional[Session] = None
+        self.inside_tmux = bool(os.environ.get('TMUX'))
 
         # Try to get the specified session (must already exist)
         sessions = self.server.list_sessions()
