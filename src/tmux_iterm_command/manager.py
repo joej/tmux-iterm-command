@@ -20,38 +20,26 @@ class TmuxManager:
         self.session_name = session_name
         self.verbose = verbose
         self._session: Optional[Session] = None
-        
-        # Check if we're inside a tmux session already
-        self.inside_tmux = bool(os.environ.get('TMUX'))
-        
-        if self.inside_tmux:
-            # If inside tmux, use the current session
-            current_session_id = os.environ.get('TMUX').split(',')[-1]
-            sessions = self.server.list_sessions()
-            for session in sessions:
-                if session.get('session_id') == current_session_id:
-                    self._session = session
-                    self.session_name = session.get('session_name')
-                    break
-        else:
-            # If outside tmux, get or create the named session
-            self._session = self._get_or_create_session(session_name)
-    
-    def _get_or_create_session(self, session_name: str) -> Session:
-        """Get existing session or create a new one."""
+
+        # Try to get the specified session (must already exist)
         sessions = self.server.list_sessions()
         for session in sessions:
             if session.get('session_name') == session_name:
-                return session
-        
-        # Create new session
-        return self.server.new_session(session_name=session_name, attach=False)
+                self._session = session
+                break
+
+        # If no session found with specified name, pick the first available session
+        if self._session is None and sessions:
+            session = sessions[0]
+            self._session = session
+            self.session_name = session.get('session_name')
+    
     
     @property
     def session(self) -> Session:
         """Get the current tmux session."""
         if self._session is None:
-            raise RuntimeError("No tmux session available")
+            raise RuntimeError("No tmux session available - please ensure at least one session exists")
         return self._session
     
     def create_window(self, window_name: str, command: Optional[str] = None, 

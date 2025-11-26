@@ -26,15 +26,13 @@ from .commands import (
 
 @click.group()
 @click.version_option(version="0.1.0")
-@click.option('--session', default='claude-dev', help='Tmux session name to use')
 @click.option('--verbose/--no-verbose', default=False, help='Enable verbose output')
 @click.pass_context
-def main(ctx: click.Context, session: str, verbose: bool):
+def main(ctx: click.Context, verbose: bool):
     """Tmux and iTerm2 command tool for coding agents."""
     ctx.ensure_object(dict)
-    ctx.obj['SESSION'] = session
     ctx.obj['VERBOSE'] = verbose
-    ctx.obj['MANAGER'] = TmuxManager(session_name=session, verbose=verbose)
+    ctx.obj['MANAGER'] = TmuxManager(verbose=verbose)
 
 
 # Add all commands to the CLI
