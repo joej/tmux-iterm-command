@@ -185,7 +185,7 @@ class TmuxManager:
                 }
 
             # Capture pane content
-            result = target_pane.capture_pane(pane_index=str(pane_index), suppress_empty=True)
+            result = target_pane.capture_pane(suppress_empty=True)
 
             if result is None:
                 result = []
@@ -228,7 +228,7 @@ class TmuxManager:
             last_change_time = start_time
 
             while time.time() - start_time < timeout:
-                current_content = target_pane.capture_pane(pane_index=str(pane_index), suppress_empty=True)
+                current_content = target_pane.capture_pane(suppress_empty=True)
                 if current_content is None:
                     current_content = []
                 current_content_str = '\n'.join(current_content) if current_content else ''
