@@ -408,7 +408,7 @@ class TmuxManager:
                     "code": "PANE_NOT_FOUND"
                 }
             
-            target_pane.kill_pane()
+            target_pane.kill()
             
             return {
                 "status": "success",
