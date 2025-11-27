@@ -46,7 +46,7 @@ tmux-iterm-command create-window --name check --command "python manage.py check"
 tmux-iterm-command list-windows
 
 # Send a command to a specific pane
-tmux-iterm-command send-command --window 0 --pane 0 "ls -la"
+tmux-iterm-command send --window 0 --pane 0 "ls -la"
 
 # Capture output from a pane
 tmux-iterm-command capture-pane --window 0 --pane 0 --lines 50
@@ -95,7 +95,7 @@ Split a window to create a new pane.
 - `--vertical`/`--horizontal`: Split orientation (default: vertical)
 - `--command`: Optional command to run in the new pane
 
-### `send-command`
+### `send`
 Send a command to a specific pane.
 - `--window`: Window index
 - `--pane`: Pane index
@@ -113,6 +113,7 @@ Wait for a pane to be idle.
 - `--pane`: Pane index
 - `--timeout`: Max time to wait in seconds (default: 30)
 - `--quiet-for`: Seconds of no output to consider idle (default: 2)
+- `--poll-interval`: Polling interval in seconds (default: 0.1)
 
 ### `kill-window`
 Kill a tmux window.
@@ -122,6 +123,47 @@ Kill a tmux window.
 Kill a tmux pane.
 - `--window`: Window index containing the pane
 - `--pane`: Pane index to kill
+
+### `list-sessions`
+List all tmux sessions.
+
+### `list-windows`
+List all windows in the current session.
+- `--session`: Optional session name to list windows from
+
+### `list-panes`
+List all panes in a specific window.
+- `--window`: Window index
+
+### `set-badge`
+Set iTerm2 badge for a window (placeholder - requires iTerm2 integration).
+- `--window`: Window index
+- `--text`: Badge text
+
+### `set-mark`
+Set iTerm2 mark for a pane (placeholder - requires iTerm2 integration).
+- `--window`: Window index
+- `--pane`: Pane index
+
+### `notify`
+Send notification (placeholder - requires iTerm2 integration).
+- `--message`: Notification message
+- `--title`: Notification title (default: 'tmux-iterm-command')
+
+### `set-tab-color`
+Set iTerm2 tab color (placeholder - requires iTerm2 integration).
+- `--window`: Window index
+- `--red`: Red value (0-255, default: 0)
+- `--green`: Green value (0-255, default: 0)
+- `--blue`: Blue value (0-255, default: 0)
+
+### `detect`
+Detect environment capabilities.
+- No arguments required
+
+### `status`
+Show current tmux status (equivalent to list-windows).
+- No arguments required
 
 ## Output Format
 
