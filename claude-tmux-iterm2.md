@@ -513,30 +513,6 @@ tmux-iterm-command kill-window --window 0
 
 ---
 
-## Questions to Resolve Before Implementation
-
-1. **Project Location**: Where should the project be created?
-   - Suggested: `/Users/judge/src/claude-tmux/`
-   - Or specify alternative location
-
-2. **Default Session Name**: What should the default tmux session be called?
-   - Suggested: `claude-dev`
-   - Or user preference
-
-3. **State File Location**: Where to store state?
-   - Suggested: `~/.claude-tmux/state.json`
-   - Or project-local: `./.claude-tmux/state.json`
-
-4. **Output Buffer Size**: Default lines to keep in memory?
-   - Suggested: 1000 lines
-   - Trade-off: memory vs. history depth
-
-5. **Error Detection Patterns**: Default regex patterns?
-   - Suggested: `Error|Exception|Traceback|FAILED|AssertionError`
-   - Django-specific: `TemplateDoesNotExist|DoesNotExist|IntegrityError`
-
----
-
 ## Timeline
 
 **Phase 1 (MVP)**: 2-3 days
@@ -547,20 +523,6 @@ tmux-iterm-command kill-window --window 0
 - iTerm2 detection
 - Basic tests
 - README documentation
-
-**Phase 2 (Production)**: 1-2 weeks
-- Enhanced output capture with monitoring threads
-- Pattern-based error detection
-- Long-lived window management
-- State persistence improvements
-- Comprehensive test suite
-- Full documentation (getting started, API reference)
-
-**Phase 3 (Advanced)**: Future
-- Workspace templates
-- MCP server wrapper (optional)
-- Advanced iTerm2 integration
-- Multi-instance collaboration
 
 ---
 
