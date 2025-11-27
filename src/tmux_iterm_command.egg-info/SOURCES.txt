@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+src/tmux_iterm_command/__init__.py
+src/tmux_iterm_command/cli.py
+src/tmux_iterm_command/commands.py
+src/tmux_iterm_command/manager.py
+src/tmux_iterm_command.egg-info/PKG-INFO
+src/tmux_iterm_command.egg-info/SOURCES.txt
+src/tmux_iterm_command.egg-info/dependency_links.txt
+src/tmux_iterm_command.egg-info/entry_points.txt
+src/tmux_iterm_command.egg-info/requires.txt
+src/tmux_iterm_command.egg-info/top_level.txt
+tests/test_basic.py
+tests/test_commands.py
+tests/test_manager.py

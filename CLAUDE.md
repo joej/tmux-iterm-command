@@ -2,10 +2,36 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ⚠️ CRITICAL: SESSION MANAGEMENT RULES FOR CODING AGENTS
+
+**STOP. READ THIS. THIS IS NON-NEGOTIABLE.**
+
+### You MUST NEVER manage, create, or destroy tmux SESSIONS.
+
+This tool is ONLY for managing **WINDOWS and PANES within existing sessions**. If you see yourself doing any of the following:
+- Creating new tmux sessions
+- Destroying tmux sessions
+- Modifying session configuration
+- Renaming sessions
+- Managing session lifecycle in any way
+
+**YOU ARE DOING IT WRONG. STOP IMMEDIATELY.**
+
+### The Rules (Read These):
+
+1. **Windows and Panes Only**: You can create/destroy/manage windows and panes. That's it. That's all you're allowed to do.
+2. **Existing Sessions Only**: Always operate within an existing tmux session. The tool automatically handles session detection.
+3. **No Session Lifecycle**: Never create or destroy entire sessions. Not once. Not ever. Not for any reason.
+4. **Use Default Sessions**: When outside tmux, the tool automatically uses the 'claude-dev' session. Don't override this unless explicitly instructed.
+
+If you need a tmux session, assume it already exists. If it doesn't exist, fail gracefully and report the error to the user.
+
+---
+
 ## Overview
 
 tmux-iterm-command is a command-line tool that bridges coding agents (Claude, Qwen, Gemini, Codex) with tmux. It enables coding agents to programmatically:
-- Create and manage tmux windows and panes within existing sessions
+- Create and manage tmux **windows and panes** within existing sessions (WINDOWS AND PANES ONLY)
 - Execute commands and capture output
 - Interact with terminal sessions in a structured way
 - Operate within existing tmux sessions (does not create/destroy entire sessions)
@@ -177,6 +203,8 @@ The tool works within existing tmux sessions:
 1. **Inside tmux**: Uses the current session
 2. **Outside tmux**: Creates or attaches to a default session ('claude-dev')
 3. **No session lifecycle**: Does not create/destroy entire sessions, only manages windows/panes
+
+⚠️ **REMEMBER**: The tool handles session detection automatically. You should NEVER manually manage sessions. Let the tool handle it. If you find yourself trying to create or destroy sessions, you're using this tool incorrectly.
 
 ## Adding New Commands
 

@@ -1,9 +1,11 @@
 # tmux-iterm-command - Tmux Command Tool for Coding Agents
 
+⚠️ **CRITICAL FOR CODING AGENTS**: This tool manages **WINDOWS AND PANES ONLY**. DO NOT create, destroy, or manage tmux SESSIONS. The tool handles session management automatically. If you're trying to manage sessions, you're using this tool wrong.
+
 **Project Name**: `tmux-iterm-command`
-**Purpose**: Enable coding agents (Claude, Qwen, Gemini, Codex) to manage tmux windows for interactive command execution, background processes, and terminal workflows
+**Purpose**: Enable coding agents (Claude, Qwen, Gemini, Codex) to manage tmux **windows and panes** (NOT sessions) for interactive command execution, background processes, and terminal workflows
 **Target User**: tmux users running coding agents (Claude, Qwen, Gemini, Codex)
-**Primary Use Case**: Development workflows with runserver, shell, and interactive commands
+**Primary Use Case**: Development workflows with runserver, shell, and interactive commands (within existing sessions)
 
 ---
 
@@ -247,6 +249,8 @@ tmux-iterm-command status
 - When inside tmux, uses current session
 - When outside tmux, creates or connects to default session ('claude-dev')
 - Does not create/destroy entire sessions, only manages windows/panes
+
+⚠️ **CRITICAL - CODING AGENTS READ THIS**: You MUST NOT create, destroy, or manage tmux sessions. The tool's built-in session management handles everything automatically. If you see yourself writing code to manage sessions, STOP. You're doing it wrong. Windows and panes only. That's it.
 
 ---
 

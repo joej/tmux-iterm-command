@@ -1,3 +1,20 @@
+Metadata-Version: 2.4
+Name: tmux-iterm-command
+Version: 0.1.0
+Summary: Tmux command tool for coding agents to manage tmux windows and panes
+Author-email: Developer <developer@example.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: libtmux>=0.37.0
+Requires-Dist: click>=8.1.7
+Requires-Dist: pydantic>=2.5.0
+Requires-Dist: typing-extensions>=4.8.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.4.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.1.0; extra == "dev"
+Requires-Dist: ruff>=0.1.9; extra == "dev"
+Requires-Dist: mypy>=1.7.0; extra == "dev"
+
 # tmux-iterm-command - Tmux Command Tool
 
 `tmux-iterm-command` is a command-line tool designed for coding agents (Claude, Qwen, Gemini, Codex) to manage tmux **windows and panes** within existing sessions. It provides a structured interface for coding agents to create terminal environments, run commands, capture output, and manage terminal windows/panes programmatically.

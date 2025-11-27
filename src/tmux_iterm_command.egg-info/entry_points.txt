@@ -1,0 +1,2 @@
+[console_scripts]
+tmux-iterm-command = tmux_iterm_command.cli:run

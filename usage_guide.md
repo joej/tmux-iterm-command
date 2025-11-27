@@ -1,5 +1,7 @@
 # Comprehensive tmux-iterm-command Usage Guide
 
+⚠️ **CRITICAL REMINDER**: This tool manages **WINDOWS AND PANES ONLY**. Never manage tmux sessions. The tool handles all session management for you automatically.
+
 tmux-iterm-command is a powerful tool that enables coding agents and developers to manage tmux windows and panes programmatically. Here's a comprehensive guide with practical command examples:
 
 ## Basic Usage Patterns
