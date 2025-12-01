@@ -87,6 +87,16 @@ tmux-iterm-command create-window --name editor
 python -m src.tmux_iterm_command.cli <command> <args>
 ```
 
+### Running with uvx (Recommended for Claude Code)
+
+```bash
+# Show available commands
+uvx git+https://github.com/joej/tmux-iterm-command --help
+
+# Run a specific command with options
+uvx git+https://github.com/joej/tmux-iterm-command create-window --name editor
+```
+
 ### Running Tests
 
 ```bash
@@ -104,6 +114,32 @@ pytest tests/test_tmux_manager.py::test_create_window
 ```
 
 ## Common Commands
+
+### Available Commands
+
+```bash
+tmux-iterm-command --help  # Show all available commands
+```
+
+**Core Commands:**
+- `capture-pane` - Capture output from a pane
+- `create-pane` - Split a window to create a new pane
+- `create-window` - Create a new tmux window
+- `detect` - Detect environment capabilities
+- `kill-pane` - Kill a tmux pane
+- `kill-window` - Kill a tmux window
+- `list-panes` - List all panes in a window
+- `list-sessions` - List all tmux sessions
+- `list-windows` - List all windows in a session
+- `send` - Send a command to a pane
+- `status` - Show current tmux status
+- `wait-idle` - Wait for a pane to be idle
+
+**Placeholder Commands** (require iTerm2 features):
+- `notify` - Send notification
+- `set-badge` - Set iTerm2 badge for a window
+- `set-mark` - Set iTerm2 mark for a pane
+- `set-tab-color` - Set iTerm2 tab color
 
 ### Tmux Management
 
@@ -124,14 +160,32 @@ tmux-iterm-command list-windows
 tmux-iterm-command list-panes --window 0
 ```
 
+### uvx Command Examples
+
+```bash
+# uvx syntax: uvx git+https://github.com/joej/tmux-iterm-command <command> [options]
+
+# Create a window with command
+uvx git+https://github.com/joej/tmux-iterm-command create-window --name my-window --command "ls -la"
+
+# Send command to existing pane
+uvx git+https://github.com/joej/tmux-iterm-command send --window 0 --pane 0 "ps aux"
+
+# Capture pane output
+uvx git+https://github.com/joej/tmux-iterm-command capture-pane --window 0 --pane 0 --lines 50
+
+# Kill a window
+uvx git+https://github.com/joej/tmux-iterm-command kill-window --window 1
+```
+
 ### Command Execution
 
 ```bash
-# Send a command to a specific pane
-tmux-iterm-command send-command --window 0 --pane 0 "npm install"
+# Send a command to a specific pane (automatically adds Enter)
+tmux-iterm-command send --window 0 --pane 0 "npm install"
 
 # Send command without pressing Enter
-tmux-iterm-command send-command --window 0 --pane 0 --no-enter "echo hello"
+tmux-iterm-command send --window 0 --pane 0 --no-enter "echo hello"
 
 # Capture pane output
 tmux-iterm-command capture-pane --window 0 --pane 0 --lines 100
@@ -189,6 +243,8 @@ def my_command(window_index, pane_index):
     # Implementation
     pass
 ```
+
+Note: Some commands like `create-window` only require `--name` and optional `--command`, while commands like `send` require both `--window` and `--pane`.
 
 ### Error Handling
 
