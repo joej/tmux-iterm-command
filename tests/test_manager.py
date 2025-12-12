@@ -21,10 +21,9 @@ class TestTmuxManager:
         self.mock_session = Mock()
         self.mock_session.session_id = '@1'
         self.mock_session.name = 'test-session'
-        self.mock_session.get = Mock(return_value='test-session')
-        self.mock_server.list_sessions.return_value = [self.mock_session]
+        self.mock_server.sessions = [self.mock_session]
         self.mock_server.new_session.return_value = self.mock_session
-        
+
         # Patch the Server class in the manager module
         with patch('claude_tmux.manager.Server') as mock_server_class:
             mock_server_class.return_value = self.mock_server
@@ -127,17 +126,16 @@ class TestTmuxManager:
     
     def test_list_sessions_success(self):
         """Test successful session listing."""
-        # Mock the server's list_sessions method
-        mock_session_info = {
-            'session_id': '@1',
-            'session_name': 'test-session',
-            'session_attached': '1',
-            'session_windows': '2'
-        }
-        self.mock_server.list_sessions.return_value = [mock_session_info]
-        
+        # Mock the server's sessions property
+        mock_session_obj = Mock()
+        mock_session_obj.session_id = '@1'
+        mock_session_obj.name = 'test-session'
+        mock_session_obj.attached = True
+        mock_session_obj.windows = [Mock(), Mock()]  # 2 windows
+        self.mock_server.sessions = [mock_session_obj]
+
         result = self.manager.list_sessions()
-        
+
         assert result['status'] == 'success'
         assert len(result['sessions']) == 1
         assert result['sessions'][0]['name'] == 'test-session'

@@ -23,9 +23,9 @@ class TmuxManager:
         self.inside_tmux = bool(os.environ.get('TMUX'))
 
         # Try to get the specified session (must already exist)
-        sessions = self.server.list_sessions()
+        sessions = self.server.sessions
         for session in sessions:
-            if session.get('session_name') == session_name:
+            if session.name == session_name:
                 self._session = session
                 break
 
@@ -33,7 +33,7 @@ class TmuxManager:
         if self._session is None and sessions:
             session = sessions[0]
             self._session = session
-            self.session_name = session.get('session_name')
+            self.session_name = session.name
     
     
     @property
@@ -267,17 +267,17 @@ class TmuxManager:
     def list_sessions(self) -> Dict[str, Any]:
         """List all tmux sessions."""
         try:
-            sessions = self.server.list_sessions()
+            sessions = self.server.sessions
             session_list = []
             for session in sessions:
                 session_info = {
-                    "id": session.get('session_id'),
-                    "name": session.get('session_name'),
-                    "attached": session.get('session_attached') == '1',
-                    "windows": int(session.get('session_windows', 0))
+                    "id": session.session_id,
+                    "name": session.name,
+                    "attached": session.attached,
+                    "windows": len(session.windows)
                 }
                 session_list.append(session_info)
-            
+
             return {
                 "status": "success",
                 "sessions": session_list
