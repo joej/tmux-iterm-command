@@ -130,8 +130,8 @@ class TestTmuxManager:
         mock_session_obj = Mock()
         mock_session_obj.session_id = '@1'
         mock_session_obj.name = 'test-session'
-        mock_session_obj.attached = True
-        mock_session_obj.windows = [Mock(), Mock()]  # 2 windows
+        mock_session_obj.session_attached = '1'
+        mock_session_obj.session_windows = '2'
         self.mock_server.sessions = [mock_session_obj]
 
         result = self.manager.list_sessions()

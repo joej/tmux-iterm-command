@@ -273,8 +273,8 @@ class TmuxManager:
                 session_info = {
                     "id": session.session_id,
                     "name": session.name,
-                    "attached": session.attached,
-                    "windows": len(session.windows)
+                    "attached": session.session_attached == '1',
+                    "windows": int(session.session_windows)
                 }
                 session_list.append(session_info)
 
