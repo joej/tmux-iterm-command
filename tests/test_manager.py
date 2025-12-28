@@ -34,9 +34,9 @@ class TestTmuxManager:
         # Mock the window and pane objects
         mock_window = Mock()
         mock_window.index = '0'
-        mock_window.attached_pane = Mock()
-        mock_window.attached_pane.send_keys = Mock()
-        mock_window.attached_pane.pane_id = '%0'
+        mock_window.active_pane = Mock()
+        mock_window.active_pane.send_keys = Mock()
+        mock_window.active_pane.pane_id = '%0'
         
         # Mock the session's new_window method
         self.mock_session.new_window.return_value = mock_window

@@ -55,7 +55,7 @@ class TmuxManager:
             )
             
             # Get the pane in the new window
-            pane = window.attached_pane
+            pane = window.active_pane
             if not pane:
                 raise RuntimeError("No attached pane found in new window")
             
