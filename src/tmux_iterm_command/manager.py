@@ -92,14 +92,14 @@ class TmuxManager:
                    command: Optional[str] = None) -> Dict[str, Any]:
         """Split a window to create a new pane."""
         try:
-            window = self.session.find_where({'window_index': str(window_index)})
+            window = self.session.windows.get(window_index=str(window_index), default=None)
             if not window:
                 return {
                     "status": "error",
                     "message": f"Window {window_index} not found",
                     "code": "WINDOW_NOT_FOUND"
                 }
-            
+
             # Split the window to create a new pane
             split_method = 'v' if vertical else 'h'
             new_pane = window.split_window(attach=False, vertical=vertical)
@@ -129,7 +129,7 @@ class TmuxManager:
     
     def _find_pane_by_index(self, window_index: int, pane_index: int) -> tuple:
         """Helper method to find a pane by window and pane index."""
-        window = self.session.find_where({'window_index': str(window_index)})
+        window = self.session.windows.get(window_index=str(window_index), default=None)
         if not window:
             return None, None, f"Window {window_index} not found"
 
@@ -292,7 +292,7 @@ class TmuxManager:
     def list_windows(self, session_name: Optional[str] = None) -> Dict[str, Any]:
         """List all windows in the session."""
         try:
-            target_session = self.session if session_name is None or session_name == self.session_name else self.server.find_where({'session_name': session_name})
+            target_session = self.session if session_name is None or session_name == self.session_name else self.server.sessions.get(session_name=session_name, default=None)
             if not target_session:
                 return {
                     "status": "error",
@@ -300,13 +300,13 @@ class TmuxManager:
                     "code": "SESSION_NOT_FOUND"
                 }
             
-            windows = target_session.list_windows()
+            windows = target_session.windows
             window_list = []
             for window in windows:
                 window_info = {
                     "index": int(window.index),
                     "name": window.name,
-                    "active": window.active,
+                    "active": window.window_active == '1',
                     "panes": len(window.panes)
                 }
                 window_list.append(window_info)
@@ -326,7 +326,7 @@ class TmuxManager:
     def list_panes(self, window_index: int) -> Dict[str, Any]:
         """List all panes in a specific window."""
         try:
-            window = self.session.find_where({'window_index': str(window_index)})
+            window = self.session.windows.get(window_index=str(window_index), default=None)
             if not window:
                 return {
                     "status": "error",
@@ -361,7 +361,7 @@ class TmuxManager:
     def kill_window(self, window_index: int) -> Dict[str, Any]:
         """Kill a window in the session."""
         try:
-            window = self.session.find_where({'window_index': str(window_index)})
+            window = self.session.windows.get(window_index=str(window_index), default=None)
             if not window:
                 return {
                     "status": "error",
@@ -386,7 +386,7 @@ class TmuxManager:
     def kill_pane(self, window_index: int, pane_index: int) -> Dict[str, Any]:
         """Kill a pane in a specific window."""
         try:
-            window = self.session.find_where({'window_index': str(window_index)})
+            window = self.session.windows.get(window_index=str(window_index), default=None)
             if not window:
                 return {
                     "status": "error",

@@ -8,7 +8,7 @@ import pytest
 # Add src to path so we can import the module
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from claude_tmux.manager import TmuxManager
+from tmux_iterm_command.manager import TmuxManager
 
 
 class TestTmuxManager:
@@ -25,7 +25,7 @@ class TestTmuxManager:
         self.mock_server.new_session.return_value = self.mock_session
 
         # Patch the Server class in the manager module
-        with patch('claude_tmux.manager.Server') as mock_server_class:
+        with patch('tmux_iterm_command.manager.Server') as mock_server_class:
             mock_server_class.return_value = self.mock_server
             self.manager = TmuxManager(session_name='test-session')
     
@@ -71,9 +71,11 @@ class TestTmuxManager:
         mock_window.split_window.pane_id = '%1'
         mock_window.panes = []
         
-        # Mock the session's find_windows method to return our mock window
-        self.mock_session.find_windows.return_value = [mock_window]
-        
+        # Mock the session's windows.get method to return our mock window
+        mock_windows = Mock()
+        mock_windows.get.return_value = mock_window
+        self.mock_session.windows = mock_windows
+
         result = self.manager.create_pane(window_index=0, vertical=True, command='echo test')
         
         assert result['status'] == 'success'
@@ -91,10 +93,12 @@ class TestTmuxManager:
         mock_window.panes = [Mock()]
         mock_window.panes[0].pane_index = '0'
         mock_window.panes[0].send_keys = Mock()
-        
-        # Mock the session's find_windows method to return our mock window
-        self.mock_session.find_windows.return_value = [mock_window]
-        
+
+        # Mock the session's windows.get method to return our mock window
+        mock_windows = Mock()
+        mock_windows.get.return_value = mock_window
+        self.mock_session.windows = mock_windows
+
         result = self.manager.send_command(window_index=0, pane_index=0, command='echo test')
         
         assert result['status'] == 'success'
@@ -111,10 +115,12 @@ class TestTmuxManager:
         mock_window.panes = [Mock()]
         mock_window.panes[0].pane_index = '0'
         mock_window.panes[0].capture_pane.return_value = ['line1', 'line2', 'line3']
-        
-        # Mock the session's find_windows method to return our mock window
-        self.mock_session.find_windows.return_value = [mock_window]
-        
+
+        # Mock the session's windows.get method to return our mock window
+        mock_windows = Mock()
+        mock_windows.get.return_value = mock_window
+        self.mock_session.windows = mock_windows
+
         result = self.manager.capture_pane(window_index=0, pane_index=0)
         
         assert result['status'] == 'success'
@@ -146,12 +152,12 @@ class TestTmuxManager:
         mock_libtmux_window = Mock()
         mock_libtmux_window.index = '0'
         mock_libtmux_window.name = 'test-window'
-        mock_libtmux_window.active = True
+        mock_libtmux_window.window_active = '1'
         mock_libtmux_window.panes = [Mock(), Mock()]  # 2 panes
         
-        # Mock the session's list_windows method
-        self.mock_session.list_windows.return_value = [mock_libtmux_window]
-        
+        # Mock the session's windows property
+        self.mock_session.windows = [mock_libtmux_window]
+
         result = self.manager.list_windows()
         
         assert result['status'] == 'success'
@@ -180,10 +186,12 @@ class TestTmuxManager:
         mock_window = Mock()
         mock_window.index = '0'
         mock_window.panes = [mock_pane1, mock_pane2]
-        
-        # Mock the session's find_windows method
-        self.mock_session.find_windows.return_value = [mock_window]
-        
+
+        # Mock the session's windows.get method
+        mock_windows = Mock()
+        mock_windows.get.return_value = mock_window
+        self.mock_session.windows = mock_windows
+
         result = self.manager.list_panes(window_index=0)
         
         assert result['status'] == 'success'
